@@ -13,27 +13,19 @@ namespace ConsolePokemon
         List<Pokemon> ListePokemon = new List<Pokemon>();
 
 
-        public async void API_FetchAll()
+        public async void API_FetchAll(int nbrPokemon, List<Pokemon> listPokemon)
         {
-            for (int i = 1; i <= 151; i++)
+
+            for (int i = 1; i <= nbrPokemon; i++)
             {
-                if (i == 50 || i == 100)
+                // pour éviter de se faire bannir
+                if (i%50 == 0)
                 {
                     System.Threading.Thread.Sleep(2000);
                 }
                 Pokemon current = await pokeClient.GetResourceAsync<Pokemon>(i);
-                ListePokemon.Add(current);
-                if (ListePokemon[i-1].Types.Count() == 1)
-                {
-                    Console.WriteLine($"#{ListePokemon[i-1].Id} : {ListePokemon[i - 1].Species.Name} ( {ListePokemon[i-1].Types[0].Type.Name} )");
-                }
-                else
-                {
-                    Console.WriteLine($"#{ListePokemon[i - 1].Id} : {ListePokemon[i - 1].Species.Name} ( {ListePokemon[i - 1].Types[0].Type.Name} / {ListePokemon[i - 1].Types[1].Type.Name} )");
-                }
+                listPokemon.Add(current);
             }
-
-
         }
     }
 }
