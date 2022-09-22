@@ -18,10 +18,9 @@ internal class Programm
             Console.Write("\nIndiquer une liste de pokémon à afficher : 2");
             Console.Write("\nFaire une recherche sur le site pokemontruc : 3");
             Console.Write("\nQuitter : 0");
-            Console.Write("\nEntrez une commande :");
             Console.WriteLine();
 
-
+            Console.Write("\nEntrez une commande : ");
             string param = Console.ReadLine() ?? "";
 
             switch (param)
@@ -31,14 +30,24 @@ internal class Programm
                     break;
 
                 case "2":
+                    Console.Write("\nCombien de pokémons voulez vous ? ");
+                    uint nbrPokemon;
+                    try
+                    {
+                        nbrPokemon = uint.Parse(Console.ReadLine() ?? "");
+                    }
+                    catch
+                    {
+                        Console.WriteLine("ce n'est pas un nombre valide");
+                        break;
+                    }
+
                     List<Pokemon> listPokemon = new();
 
-                    Console.WriteLine("Hello, World!");
-                    API_Pokemon API = new API_Pokemon();
-                    API.API_FetchAll(20, listPokemon);
+                    API_Pokemon API = new();
+                    API.API_FetchAll(Convert.ToInt32(nbrPokemon), listPokemon);
 
-                    Console.WriteLine("Récupération depuis l'API en cours...");
-                    System.Threading.Thread.Sleep(5000);
+                    // /!\ danger, on peut appuyer sur la touche avant la fin du thread
                     Console.ReadKey();
 
                     ConsolePokemon.HTML_Handler.CreerHTMLtexte(listPokemon);

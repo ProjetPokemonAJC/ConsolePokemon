@@ -9,13 +9,11 @@ namespace ConsolePokemon
 {
     public class API_Pokemon
     {
-        PokeApiClient pokeClient = new PokeApiClient();
-        List<Pokemon> ListePokemon = new List<Pokemon>();
-
+        readonly PokeApiClient pokeClient = new();
 
         public async void API_FetchAll(int nbrPokemon, List<Pokemon> listPokemon)
         {
-
+            Console.WriteLine("Récupération depuis l'API en cours...");
             for (int i = 1; i <= nbrPokemon; i++)
             {
                 // pour éviter de se faire bannir
@@ -26,6 +24,7 @@ namespace ConsolePokemon
                 Pokemon current = await pokeClient.GetResourceAsync<Pokemon>(i);
                 listPokemon.Add(current);
             }
+            Console.WriteLine("Fin du chargement, apuyer sur une touche.");
         }
     }
 }

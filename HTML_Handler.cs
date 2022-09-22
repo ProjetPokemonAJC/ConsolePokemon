@@ -32,19 +32,19 @@ namespace ConsolePokemon
             public static void CreerHTMLtexte(List<Pokemon> listPokemon)
         {
             List<string> codeHTML = HeaderHTML();
-
-            Console.WriteLine($"list longueur : {listPokemon.Count}");
+            codeHTML.Add("<ul>");
             for (int i = 0; i <= listPokemon.Count - 1; i++)
             {
                 if (listPokemon[i].Types.Count == 1)
                 {
-                    codeHTML.Add($"\n#{listPokemon[i].Id} : {listPokemon[i].Species.Name} ( {listPokemon[i].Types[0].Type.Name} )");
+                    codeHTML.Add($"<li>#{listPokemon[i].Id} : {listPokemon[i].Species.Name} ( {listPokemon[i].Types[0].Type.Name} )</li>");
                 }
                 else
                 {
-                    codeHTML.Add($"\n#{listPokemon[i].Id} : {listPokemon[i].Species.Name} ( {listPokemon[i].Types[0].Type.Name} / {listPokemon[i].Types[1].Type.Name} )");
+                    codeHTML.Add($"<li>#{listPokemon[i].Id} : {listPokemon[i].Species.Name} ( {listPokemon[i].Types[0].Type.Name} / {listPokemon[i].Types[1].Type.Name} )</li>");
                 }
             }
+            codeHTML.Add("</ul>");
 
             FooterHTML(codeHTML);
 
