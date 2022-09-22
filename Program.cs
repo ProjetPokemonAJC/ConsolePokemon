@@ -1,4 +1,5 @@
 ﻿using ConsolePokemon;
+using PokeApiNet;
 using System.Text;
 
 internal class Programm
@@ -26,17 +27,21 @@ internal class Programm
             switch (param)
             {
                 case "1":
-                    ConsolePokemon.HTML_Handler.CreerHTML();
+                    // ConsolePokemon.HTML_Handler.CreerHTML();
                     break;
 
                 case "2":
+                    List<Pokemon> listPokemon = new();
+
                     Console.WriteLine("Hello, World!");
                     API_Pokemon API = new API_Pokemon();
-                    API.API_FetchAll();
+                    API.API_FetchAll(20, listPokemon);
 
                     Console.WriteLine("Récupération depuis l'API en cours...");
-                    System.Threading.Thread.Sleep(15000);
+                    System.Threading.Thread.Sleep(5000);
                     Console.ReadKey();
+
+                    ConsolePokemon.HTML_Handler.CreerHTMLtexte(listPokemon);
 
                     break;
 
