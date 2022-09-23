@@ -125,23 +125,31 @@ namespace ConsolePokemon
             index = pathType2.IndexOf("ConsolePokemon") + 14;
             pathType2 = pathType2[..index];
             pathType2 += "\\html\\template_type2.html";
-            
-            foreach (Pokemon pokemon in listPokemon)
+
+
+            // boucle d'écriture de l'HTML
+            for (int i = 0; i < listPokemon.Count; i++)
             {
-                // Open the stream and read it back.
+                if (i % 4 == 0)
+                {
+                    codeHTML.Add("        <div class=\"row mx-5\">");
+                }
+
+                // Boucle d'écriture du body d'un pokemon
                 using StreamReader sr = File.OpenText(pathBody);
                 string? s = "";
-                Console.WriteLine($"nb de poke : {listPokemon.Count}");
                 while ((s = sr.ReadLine()) != null)
                 {
-                    // gestion de base
-                    s = s.Replace("$pokemon_ID", Convert.ToString(pokemon.Id));
-                    s = s.Replace("$nomPokemon", pokemon.Name);
-                    s = s.Replace("$type1", pokemon.Types[0].Type.Name);
+                    Console.WriteLine($"on est rentré, num boucle : {i}");
 
-                    
+                    // gestion de base
+                    s = s.Replace("$pokemon_ID", Convert.ToString(listPokemon[i].Id));
+                    s = s.Replace("$nomPokemon", listPokemon[i].Name);
+                    s = s.Replace("$type1", listPokemon[i].Types[0].Type.Name);
+
+
                     //gestion du type 2
-                    if (pokemon.Types.Count == 2 && s.Contains("$espaceType2"))
+                    if (listPokemon[i].Types.Count == 2 && s.Contains("$espaceType2"))
                     {
                         // ouverture du template html pour le type 2
                         s = s.Replace("$espaceType2", "");
@@ -151,7 +159,7 @@ namespace ConsolePokemon
                         string? s2 = "";
                         while ((s2 = sr2.ReadLine()) != null)
                         {
-                            s2 = s2.Replace("$type2", pokemon.Types[1].Type.Name);
+                            s2 = s2.Replace("$type2", listPokemon[i].Types[1].Type.Name);
                             codeHTML.Add(s2);
                         }
                     }
@@ -161,8 +169,13 @@ namespace ConsolePokemon
                     }
                     codeHTML.Add(s);
                 }
+
+                if (i % 4 == 0)
+                {
+                    codeHTML.Add("        </div>");
+                }
             }
-            
+
 
             FooterHTMLgrafic(codeHTML);
 
