@@ -170,7 +170,7 @@ namespace ConsolePokemon
                     codeHTML.Add(s);
                 }
 
-                if (i % 4 == 0)
+                if (i % 4 == 3)
                 {
                     codeHTML.Add("        </div>");
                 }
