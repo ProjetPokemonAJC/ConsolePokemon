@@ -1,6 +1,7 @@
 ﻿using PokeApiNet;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -113,32 +114,61 @@ namespace ConsolePokemon
             List<string> codeHTML = new();
             HeaderHTMLgrafic(codeHTML);
 
+
+            // création des path
             string pathBody = Directory.GetCurrentDirectory();
             int index = pathBody.IndexOf("ConsolePokemon") + 14;
             pathBody = pathBody[..index];
             pathBody += "\\html\\template_body.html";
 
+            string pathType2 = Directory.GetCurrentDirectory();
+            index = pathType2.IndexOf("ConsolePokemon") + 14;
+            pathType2 = pathType2[..index];
+            pathType2 += "\\html\\template_type2.html";
+            
             foreach (Pokemon pokemon in listPokemon)
             {
                 // Open the stream and read it back.
-                using (StreamReader sr = File.OpenText(pathBody))
+                using StreamReader sr = File.OpenText(pathBody);
+                string? s = "";
+                Console.WriteLine($"nb de poke : {listPokemon.Count}");
+                while ((s = sr.ReadLine()) != null)
                 {
-                    string? s = "";
-                    while ((s = sr.ReadLine()) != null)
-                    {
-                        s = s.Replace("$spriteFront_ID", Convert.ToString(pokemon.Id));
-                        s = s.Replace("$nomPokemon", pokemon.Name);
-                        s = s.Replace("$type1", pokemon.Types[0].Type.Name);
+                    // gestion de base
+                    s = s.Replace("$pokemon_ID", Convert.ToString(pokemon.Id));
+                    s = s.Replace("$nomPokemon", pokemon.Name);
+                    s = s.Replace("$type1", pokemon.Types[0].Type.Name);
 
-                        s = s.Replace("$type2", pokemon.Types[1].Type.Name);
-                        codeHTML.Add(s);
+                    
+                    //gestion du type 2
+                    if (pokemon.Types.Count == 2 && s.Contains("$espaceType2"))
+                    {
+                        // ouverture du template html pour le type 2
+                        s = s.Replace("$espaceType2", "");
+
+                        // écriture du code html pour le type 2
+                        using StreamReader sr2 = File.OpenText(pathType2);
+                        string? s2 = "";
+                        while ((s2 = sr2.ReadLine()) != null)
+                        {
+                            s2 = s2.Replace("$type2", pokemon.Types[1].Type.Name);
+                            codeHTML.Add(s2);
+                        }
                     }
+                    else
+                    {
+                        s = s.Replace("$espaceType2", "");
+                    }
+                    codeHTML.Add(s);
                 }
             }
+            
 
             FooterHTMLgrafic(codeHTML);
 
             string pathFilePokemon = Directory.GetCurrentDirectory();
+            index = pathType2.IndexOf("ConsolePokemon") + 14;
+            pathFilePokemon = pathFilePokemon[..index];
 
             try
             {
