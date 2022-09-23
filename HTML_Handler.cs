@@ -29,7 +29,7 @@ namespace ConsolePokemon
 
             return codeHTML;
         }
-            public static void CreerHTMLtexte(List<Pokemon> listPokemon)
+        public static void CreerHTMLtexte(List<Pokemon> listPokemon)
         {
             List<string> codeHTML = HeaderHTML();
             codeHTML.Add("<ul>");
@@ -48,12 +48,11 @@ namespace ConsolePokemon
 
             FooterHTML(codeHTML);
 
-            createHTMLFile(codeHTML);
-
+            CreateHTMLFile(codeHTML);
 
         }
 
-        private static void createHTMLFile(List<string> codeHTML)
+        private static void CreateHTMLFile(List<string> codeHTML)
         {
 
             string pathDirectory = Directory.GetCurrentDirectory();
@@ -62,8 +61,8 @@ namespace ConsolePokemon
             {
                 // Write the string array to a new file named "WriteLines.txt".
                 using StreamWriter outputFile = new(Path.Combine(pathDirectory, "pokémon.html"));
-                foreach (string line in codeHTML)
-                    outputFile.WriteLine(line);
+                foreach (string line in codeHTML) outputFile.WriteLine(line);
+                Console.WriteLine($"fichier créer dans : {pathDirectory}");
 
                 //// Open the stream and read it back.
                 //using (StreamReader sr = File.OpenText(pathDirectory))
@@ -80,13 +79,6 @@ namespace ConsolePokemon
             {
                 Console.WriteLine(ex.ToString());
             }
-
-            // Create a string array with the lines of text
-            string[] lines = { "First line", "Second line", "Third line" };
-
-            // Set a variable to the Documents path.
-            string docPath =
-              Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         }
 
         public static void CreerHTMLgrafic(List<Pokemon> listPokemon)
@@ -108,11 +100,11 @@ namespace ConsolePokemon
             {
                 if (listPokemon[i].Types.Count == 1)
                 {
-                    codeHTML.Add($"\n#{listPokemon[i].Id} : {listPokemon[i].Species.Name} ( {listPokemon[i].Types[0].Type.Name} )");
+                    codeHTML.Add($"#{listPokemon[i].Id} : {listPokemon[i].Species.Name} ( {listPokemon[i].Types[0].Type.Name} )");
                 }
                 else
                 {
-                    codeHTML.Add($"\n#{listPokemon[i].Id} : {listPokemon[i].Species.Name} ( {listPokemon[i].Types[0].Type.Name} / {listPokemon[i].Types[1].Type.Name} )");
+                    codeHTML.Add($"#{listPokemon[i].Id} : {listPokemon[i].Species.Name} ( {listPokemon[i].Types[0].Type.Name} / {listPokemon[i].Types[1].Type.Name} )");
                 }
             }
 
@@ -127,21 +119,12 @@ namespace ConsolePokemon
             {
                 // Write the string array to a new file named "WriteLines.txt".
                 using StreamWriter outputFile = new(Path.Combine(pathDirectory, "pokémon.html"));
-                foreach (string line in codeHTML)
-                    outputFile.WriteLine(line);
-
+                foreach (string line in codeHTML) outputFile.WriteLine(line);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
-
-            // Create a string array with the lines of text
-            string[] lines = { "First line", "Second line", "Third line" };
-
-            // Set a variable to the Documents path.
-            string docPath =
-              Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         }
     }
 }
