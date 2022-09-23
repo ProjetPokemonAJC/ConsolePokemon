@@ -1,5 +1,6 @@
 ﻿using ConsolePokemon;
 using PokeApiNet;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -21,7 +22,6 @@ internal class Programm
             Console.Write("\nCréer une page pour un seul pokémon : 1");
             Console.Write("\nCréer une page html d'une liste texte de pokémon : 2");
             Console.Write("\nCréer une page html d'une liste graphique de pokémon : 3");
-            Console.Write("\nFaire une recherche sur le site pokemontruc : 4");
             Console.Write("\nQuitter : 0");
             Console.WriteLine();
 
@@ -34,7 +34,9 @@ internal class Programm
             switch (param)
             {
                 case "1":
-                    // ConsolePokemon.HTML_Handler.CreerHTML();
+                    Pokemon? pokemon = FetchSinglePokemon(API);
+                    if (pokemon == null) break;
+                    ConsolePokemon.HTML_Handler.CreerHTMLSinglePokemon(pokemon);
                     break;
 
                 case "2":
@@ -47,9 +49,6 @@ internal class Programm
                     listPokemon = FetchPokemon(API);
                     if (listPokemon == null) break;
                     ConsolePokemon.HTML_Handler.CreerHTMLgrafic(listPokemon);
-                    break;
-
-                case "4":
                     break;
 
                 case "0":
@@ -86,5 +85,30 @@ internal class Programm
         Console.ReadKey();
 
         return listPokemon;
+    }
+
+    static Pokemon? FetchSinglePokemon(API_Pokemon API)
+    {
+        Pokemon? pokemon = null;
+
+        uint pokemonID;
+        Console.Write("\nID du pokémon ? ");
+        try
+        {
+            pokemonID = uint.Parse(Console.ReadLine() ?? "");
+        }
+        catch
+        {
+            Console.WriteLine("ce n'est pas un nombre valide");
+            return null;
+        }
+
+        // thread
+        API.API_Fetch_Single(Convert.ToInt32(pokemonID), pokemon);
+
+        // /!\ danger, on peut appuyer sur la touche avant la fin du thread
+        Console.ReadKey();
+
+        return pokemon;
     }
 }

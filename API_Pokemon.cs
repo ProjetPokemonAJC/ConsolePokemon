@@ -27,7 +27,7 @@ namespace ConsolePokemon
             Console.WriteLine("Fin du chargement, appuyez sur une touche.");
         }
 
-        public async void API_Fetch_Single(int i, Pokemon current)
+        public async void API_Fetch_Single(int i, Pokemon? current)
         {
             Console.WriteLine("Récupération depuis l'API en cours...");
             current = await pokeClient.GetResourceAsync<Pokemon>(i);
