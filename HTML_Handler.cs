@@ -9,17 +9,15 @@ namespace ConsolePokemon
 {
     internal abstract class HTML_Handler
     {
-        public static List<string> HeaderHTML()
+        public static List<string> HeaderHTML(List<string> codeHTML)
         {
-            List<string> codeHTML = new()
-            {
-                "<!DOCTYPE html>\r",
-                "<html>\r    <head>\r",
-                "        <meta charset=\"utf-8\" />\r",
-                "        <title>Titre</title>\r",
-                "    </head>\r",
-                "\r    <body>\r",
-            };
+            codeHTML.Add("<!DOCTYPE html>\r");
+            codeHTML.Add("<html>\r    <head>\r");
+            codeHTML.Add("        <meta charset=\"utf-8\" />\r");
+            codeHTML.Add("        <title>Titre</title>\r");
+            codeHTML.Add("    </head>\r");
+            codeHTML.Add("\r    <body>\r");
+
             return codeHTML;
         }
         public static List<string> FooterHTML(List<string> codeHTML)
@@ -29,9 +27,49 @@ namespace ConsolePokemon
 
             return codeHTML;
         }
+        public static List<string> HeaderHTMLgrafic(List<string> codeHTML)
+        {
+            string pathDirectory = Directory.GetCurrentDirectory();
+            int index = pathDirectory.IndexOf("ConsolePokemon") + 14;
+            pathDirectory = pathDirectory[..index];
+            pathDirectory += "\\html\\template_header.html";
+
+            // Open the stream and read it back.
+            using (StreamReader sr = File.OpenText(pathDirectory))
+            {
+                string? s = "";
+                while ((s = sr.ReadLine()) != null)
+                {
+                    codeHTML.Add(s);
+                }
+            }
+
+            return codeHTML;
+        }
+        public static List<string> FooterHTMLgrafic(List<string> codeHTML)
+        {
+            string pathDirectory = Directory.GetCurrentDirectory();
+            int index = pathDirectory.IndexOf("ConsolePokemon") + 14;
+            pathDirectory = pathDirectory[..index];
+            pathDirectory += "\\html\\template_footer.html";
+
+            // Open the stream and read it back.
+            using (StreamReader sr = File.OpenText(pathDirectory))
+            {
+                string? s = "";
+                while ((s = sr.ReadLine()) != null)
+                {
+                    codeHTML.Add(s);
+                }
+            }
+
+            return codeHTML;
+        }
+
         public static void CreerHTMLtexte(List<Pokemon> listPokemon)
         {
-            List<string> codeHTML = HeaderHTML();
+            List<string> codeHTML = new();
+            HeaderHTML(codeHTML);
             codeHTML.Add("<ul>");
             for (int i = 0; i <= listPokemon.Count - 1; i++)
             {
@@ -63,17 +101,6 @@ namespace ConsolePokemon
                 using StreamWriter outputFile = new(Path.Combine(pathDirectory, "pokémon.html"));
                 foreach (string line in codeHTML) outputFile.WriteLine(line);
                 Console.WriteLine($"fichier créer dans : {pathDirectory}");
-
-                //// Open the stream and read it back.
-                //using (StreamReader sr = File.OpenText(pathDirectory))
-                //{
-                //    string? s = "";
-                //    while ((s = sr.ReadLine()) != null)
-                //    {
-                //        Console.WriteLine(s);
-                //    }
-                //}
-                //Console.WriteLine($"emplacement du fichier html : {pathDirectory}");
             }
             catch (Exception ex)
             {
@@ -83,43 +110,42 @@ namespace ConsolePokemon
 
         public static void CreerHTMLgrafic(List<Pokemon> listPokemon)
         {
+            List<string> codeHTML = new();
+            HeaderHTMLgrafic(codeHTML);
 
-            List<string> codeHTML = new()
+            string pathBody = Directory.GetCurrentDirectory();
+            int index = pathBody.IndexOf("ConsolePokemon") + 14;
+            pathBody = pathBody[..index];
+            pathBody += "\\html\\template_body.html";
+
+            foreach (Pokemon pokemon in listPokemon)
             {
-                "<!DOCTYPE html>\r",
-                "<html>\r    <head>\r",
-                "        <meta charset=\"utf-8\" />\r",
-                "        <title>Titre</title>\r",
-                "    </head>\r",
-                "\r    <body>\r",
-            };
-
-
-            Console.WriteLine($"list longueur : {listPokemon.Count}");
-            for (int i = 0; i <= listPokemon.Count - 1; i++)
-            {
-                if (listPokemon[i].Types.Count == 1)
+                // Open the stream and read it back.
+                using (StreamReader sr = File.OpenText(pathBody))
                 {
-                    codeHTML.Add($"#{listPokemon[i].Id} : {listPokemon[i].Species.Name} ( {listPokemon[i].Types[0].Type.Name} )");
-                }
-                else
-                {
-                    codeHTML.Add($"#{listPokemon[i].Id} : {listPokemon[i].Species.Name} ( {listPokemon[i].Types[0].Type.Name} / {listPokemon[i].Types[1].Type.Name} )");
+                    string? s = "";
+                    while ((s = sr.ReadLine()) != null)
+                    {
+                        s = s.Replace("$spriteFront_ID", Convert.ToString(pokemon.Id));
+                        s = s.Replace("$nomPokemon", pokemon.Name);
+                        s = s.Replace("$type1", pokemon.Types[0].Type.Name);
+
+                        s = s.Replace("$type2", pokemon.Types[1].Type.Name);
+                        codeHTML.Add(s);
+                    }
                 }
             }
 
+            FooterHTMLgrafic(codeHTML);
 
-            codeHTML.Add("    </body>\r");
-            codeHTML.Add("</html>");
-
-
-            string pathDirectory = Directory.GetCurrentDirectory();
+            string pathFilePokemon = Directory.GetCurrentDirectory();
 
             try
             {
                 // Write the string array to a new file named "WriteLines.txt".
-                using StreamWriter outputFile = new(Path.Combine(pathDirectory, "pokémon.html"));
+                using StreamWriter outputFile = new(Path.Combine(pathFilePokemon, "pokémon.html"));
                 foreach (string line in codeHTML) outputFile.WriteLine(line);
+                Console.WriteLine($"fichier créer dans : {pathFilePokemon}");
             }
             catch (Exception ex)
             {

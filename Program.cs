@@ -14,6 +14,9 @@ internal class Programm
         bool exit = false;
         while (!exit)
         {
+
+            string pathDirectory = Directory.GetCurrentDirectory();
+
             Console.Write("\nApplication pokédex - Menu principal");
             Console.Write("\nCréer une page pour un seul pokémon : 1");
             Console.Write("\nCréer une page html d'une liste texte de pokémon : 2");
@@ -24,6 +27,7 @@ internal class Programm
 
             Console.Write("\nEntrez une commande : ");
             string param = Console.ReadLine() ?? "";
+
 
             List<Pokemon>? listPokemon;
             API_Pokemon API = new();
