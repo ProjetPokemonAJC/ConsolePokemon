@@ -140,8 +140,6 @@ namespace ConsolePokemon
                 string? s = "";
                 while ((s = sr.ReadLine()) != null)
                 {
-                    Console.WriteLine($"on est rentré, num boucle : {i}");
-
                     // gestion de base
                     s = s.Replace("$pokemon_ID", Convert.ToString(listPokemon[i].Id));
                     s = s.Replace("$nomPokemon", listPokemon[i].Name);
